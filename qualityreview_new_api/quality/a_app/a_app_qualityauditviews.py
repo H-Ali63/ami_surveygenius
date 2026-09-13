@@ -8,7 +8,9 @@ from datetime import datetime, time
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
+from django.db import connection
 from django.db.models import Q
+from django.db.models.expressions import RawSQL
 from django.core.cache import cache
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -562,19 +564,26 @@ class QualityAuditView(TemplateView):
         )
 
         # Older responses may not have been backfilled into teamleader yet.
-        # Read their legacy tldetails value so the selector remains complete.
-        legacy_params = (
-            SurveyResponse.objects
-            .filter(params__contains='"tldetails"')
-            .values_list("params", flat=True)
-            .order_by("-pk")[:10000]
-            .iterator()
-        )
-        for raw_params in legacy_params:
-            params = parse_json_field(raw_params)
-            field_researcher = str(params.get("tldetails", "")).strip()
-            if field_researcher:
-                fieldresearchers.add(field_researcher)
+        # Extract only distinct legacy values in the database instead of
+        # transferring and parsing up to 10,000 complete response records.
+        if not fieldresearchers and connection.vendor == "mysql":
+            legacy_fieldresearchers = (
+                SurveyResponse.objects
+                .annotate(
+                    legacy_teamleader=RawSQL(
+                        "CASE WHEN JSON_VALID(params) THEN "
+                        "JSON_UNQUOTE(JSON_EXTRACT(params, %s)) "
+                        "ELSE NULL END",
+                        ("$.tldetails",),
+                    )
+                )
+                .exclude(legacy_teamleader__isnull=True)
+                .exclude(legacy_teamleader="")
+                .values_list("legacy_teamleader", flat=True)
+                .distinct()
+                .order_by("legacy_teamleader")
+            )
+            fieldresearchers.update(legacy_fieldresearchers)
 
         # --------------------------------------------------------------
         # Verified By

@@ -10306,3 +10306,20 @@ AttributeError: 'AnonymousUser' object has no attribute 'user_employee'
 2026-09-08 20:28:40,242 WARNING django.server "GET /favicon.ico HTTP/1.1" 404 7679
 2026-09-09 12:14:45,580 WARNING django.request Not Found: /favicon.ico
 2026-09-09 12:14:45,583 WARNING django.server "GET /favicon.ico HTTP/1.1" 404 7679
+2026-09-13 09:45:31,535 WARNING django.request Not Found: /favicon.ico
+2026-09-13 09:45:31,537 WARNING django.server "GET /favicon.ico HTTP/1.1" 404 7679
+2026-09-13 09:57:33,416 WARNING django.server "GET /static/vendors/js/bootstrap.min.js.map HTTP/1.1" 404 1907
+2026-09-13 09:57:33,416 WARNING django.server "GET /static/vendors/js/jquery.contextMenu.min.js.map HTTP/1.1" 404 1934
+2026-09-13 09:57:33,522 WARNING django.server "GET /static/vendors/css/jquery.contextMenu.min.css.map HTTP/1.1" 404 1940
+2026-09-13 09:57:34,339 WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+2026-09-13 09:57:34,340 WARNING django.server "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7790
+2026-09-13 09:57:43,343 WARNING django.server "GET /static/vendors/css/jquery.contextMenu.min.css.map HTTP/1.1" 404 1940
+2026-09-13 09:57:43,349 WARNING django.server "GET /static/vendors/js/bootstrap.min.js.map HTTP/1.1" 404 1907
+2026-09-13 09:57:43,526 WARNING django.server "GET /static/vendors/js/jquery.contextMenu.min.js.map HTTP/1.1" 404 1934
+2026-09-13 09:57:44,403 WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+2026-09-13 09:57:44,405 WARNING django.server "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7790
+2026-09-13 09:59:03,484 WARNING django.server "GET /static/vendors/css/jquery.contextMenu.min.css.map HTTP/1.1" 404 1940
+2026-09-13 09:59:03,493 WARNING django.server "GET /static/vendors/js/bootstrap.min.js.map HTTP/1.1" 404 1907
+2026-09-13 09:59:03,787 WARNING django.server "GET /static/vendors/js/jquery.contextMenu.min.js.map HTTP/1.1" 404 1934
+2026-09-13 09:59:04,558 WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+2026-09-13 09:59:04,559 WARNING django.server "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7790
