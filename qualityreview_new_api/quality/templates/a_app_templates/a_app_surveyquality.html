@@ -1,0 +1,60 @@
+{% if department == 'Quality' or department == 'Operations' or department == 'HR' or department == 'Product' or department == 'Finance' or department == 'Accounts' or department == "Management" %}
+  <div class="row">
+    <div class="col-md-12 d-flex align-items-stretch grid-margin">
+      <div class="row flex-grow">
+        <div class="col-6">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Select a project</h4>
+              <form class="forms-sample" method="GET" action="#">
+                <div class="form-group">
+                  <select name="project" class="form-control form-control-lg" id="exampleFormControlSelect1" style="border:1px solid black">
+                      <option value="">Choose ...</option>
+                      {% for project in projects %}
+                        <option value="{{project.pk}}">{{project.name}}</option>
+                      {% endfor %}
+                  </select><br>
+
+                     <div class="form-group">
+                  <select name="activity" class="form-control form-control-lg" id="list_of_activity" style="border:1px solid black">
+                      <option value="">Choose ...</option>
+                      {% for activity in list_of_activity %}
+                        <option value="{{activity}}">{{activity}}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+
+
+                  <div class="form-group">
+                    <span style="font-size: 14px;">Start Date : <input type="date" name="startDate" id="startDate"/></span>
+                  </div><br>
+                  <div class="form-group">
+                    <span style="font-size: 14px;">End Date : <input type="date" name="endDate" id="endDate"></span>
+                  </div>
+
+
+                </div>
+                <button  type="submit" class="btn btn-success mr-2">Submit</button><span>
+                  {% endif %}
+
+      {% if showDataFlag == True %}
+      <a href="/SurveyExportDetails?project={{project}}&activity={{activity}}&startDate={{startDate}}&endDate={{endDate}}" value="submit">Export Data</a>
+
+      {% endif %}
+              </span>
+
+
+
+              </form>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+  </div>
+
+
+
+
+
+

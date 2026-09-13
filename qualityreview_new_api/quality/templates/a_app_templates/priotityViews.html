@@ -1,0 +1,46 @@
+<div>
+    <h3>Priority Tasks ( {{ tasks | length }} )</h3>
+    <div>
+        {% for tasks in tasks %}
+        <h4><b>{{ tasks.task_id }}</b></h4>
+        {% endfor %}
+    </div>
+
+
+<div>
+
+
+<form method="post" id="add_form" action="/priority" >
+    {% csrf_token %}
+
+    <input type='number' id='export' name='export_task_id' />
+    <input type='text' name='export_action'   value="add" hidden/>
+    <input type="submit" value='Add' style="border: none;padding: 4px;color: #FFFFFF;background: #479439;width: 85px" />
+</form>
+</div>
+
+
+<div style="margin-top: 15px;">
+<form method="post" id="remove_form" action="/priority" >
+    {% csrf_token %}
+    <input type='number' id='export_remove' name='export_task_id' />
+    <input type='text' name='export_action'   value="delete" hidden/>
+    <input type="submit" value='Delete' style="border: none;padding: 4px;color: #FFFFFF;background: #de0b0b;width: 85px" />
+</form>
+</div>
+
+<div>
+<form method="post" id="start_priority" action="/priority" >
+    {% csrf_token %}
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" required>
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" required><br><br>
+    <input type='text' name='export_action'   value="start" hidden/>
+<!--    <input type="submit" value="Start" style="border: none;padding: 4px;color: #FFFFFF;background: #943993;width: 85px;margin-top: 20px;">-->
+</form>
+
+</div>
+
+</div>
+

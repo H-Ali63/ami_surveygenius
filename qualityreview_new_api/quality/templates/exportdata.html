@@ -1,0 +1,60 @@
+
+{% if department == "Product" and userrole == "Manager" or project.id == 399 and department == "Operations" or project.id == 400 and department == "Operations" or project.id == 402 and department == "Operations" or project.id == 419 and department == "Operations" or department == "Data Analysis" or request.user.user_employee.employee_id == '109955' or request.user.user_employee.employee_id == '113374' %}         {%comment%}added for ranjan{%endcomment%}
+  <div class="row" style="padding-bottom: 10px;">
+      <a href="/exportdata?project={{project.id}}&export=text" type="submit" class="btn btn-outline-primary mr-2">Export <b>Text</b></a>
+      <a href="/exportdata?project={{project.id}}&export=code" type="submit" class="btn btn-outline-primary mr-2">Export <b>Codes</b></a>
+  </div>
+{% endif %}
+{% if department == "Product" and userrole == "Manager" or department == "IT" or department == "Data Analysis" %}
+  <div class="row" style="padding-bottom: 10px;">
+      <a href="/exportdata?project={{project.id}}&export=qualitybackcheck" type="submit" class="btn btn-outline-primary mr-2">Export <b>Quality Backcheck</b></a>
+  </div>
+{% endif %}
+{% if userrole == "Manager" or userrole == "Executive" or userrole == "Head" or userrole == "Senior executive" or userrole == "OPERATIONS COORDINATOR" or userrole == "Assistant_Manager" or userrole == "Senior executive-Quality Assurance" and department == "Operations" or department == "Quality" or department == "Finance" or department == "Accounts" or department == "HR" or department == "HR Analytics" or department == "Management" or department == "Data Analysis" %}
+  <div class="row" style="padding-bottom: 10px;">
+      <a href="/exportdata?project={{project.id}}&export=quality" type="submit" class="btn btn-outline-secondary mr-2">Export <b>Quality</b> Reports</a>
+      <a href="/exportdata?project={{project.id}}&export=qualitysummary" type="submit" class="btn btn-outline-secondary mr-2">Export <b>Quality Summary</b> Reports</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+      <a href="/exportdata?project={{project.id}}&export=qualitysummaryinternal" type="submit" class="btn btn-outline-success mr-2">Export <b>Quality Summary Internal</b> Reports(daywise available -> &days=1)</a>
+      <a href="/exportdata?project={{project.id}}&export=surveyors" type="submit" class="btn btn-outline-success mr-2">Export <b>Surveyor Codes</b></a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=qcempreports&days=0" type="submit" class="btn btn-outline-primary mr-2">Export <b>Quality Analytist</b> Reports</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=otpverification" type="submit" class="btn btn-outline-danger mr-2">Export <b>OTP</b> Verification Raw data</a>
+    <a href="/exportdata?project={{project.id}}&export=otpreports&days=0" type="submit" class="btn btn-outline-danger mr-2">Export Live <b>OTP</b> Verification Reports<br><small>Reports for a particular project for today</small></a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=otpoverallreports&status=0" type="submit" class="btn btn-outline-dark mr-2">Export <b>OTP</b> Reports (Project wise Overall)<br><small>Reports for a particular project from the beginning</small></a>
+    <a href="/exportdata?project={{project.id}}&export=otpreports&days=1" type="submit" class="btn btn-outline-danger mr-2">Export Previous Day's <b>OTP</b> Verification Reports<br><small>Reports for a particular project for 1 day</small></a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=otpoverallreports&status=1" type="submit" class="btn btn-outline-dark mr-2">Export <b>OTP</b> Reports (All Projects)<br><small>Reports for all active projects from the beginning</small></a>
+    <a href="/exportdata?project={{project.id}}&export=otpoverallreports&status=1&days=1" type="submit" class="btn btn-outline-dark mr-2">Export Previous Day's <b>OTP</b> Reports (All Projects)<br><small>Reports for all active projects for 1 day</small></a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=attendance&days=1" type="submit" class="btn btn-outline-dark mr-2">Export Previous Day's <b>Attendance</b> Reports(All Projects)</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=timeseries&days=0" type="submit" class="btn btn-outline-info mr-2">Export Live <b>Time Series</b> Reports (Project wise Overall)</a>
+    <a href="/exportdata?project={{project.id}}&export=timeseries&days=1" type="submit" class="btn btn-outline-info mr-2">Export Previous Day's <b>Time Series</b> Reports (Project wise Overall)</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=hourlyreport&days=1" type="submit" class="btn btn-outline-info mr-2">Export Previous Day's <b>Hourly</b> Reports (All Projects)</a>
+    <a href="/exportdata?project={{project.id}}&export=hourlyreport&days=0" type="submit" class="btn btn-outline-info mr-2">Export Live <b>Hourly</b> Reports (All Projects)</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=breaktime&days=1" type="submit" class="btn btn-outline-primary mr-2">Previous Day's <b>Break Time</b> (All projects)</a>
+    <a href="/exportdata?project={{project.id}}&export=gpsreports&days=1" type="submit" class="btn btn-outline-primary mr-2"><b>GPS Reports</b> (All projects)</a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=productivityreports" type="submit" class="btn btn-outline-primary mr-2"><b>Productivity</b> Reports (Project wise Overall)</a>
+    <a href="/exportdata?project={{project.id}}&export=employeecodes" type="submit" class="btn btn-outline-success mr-2">Export <b>Employee Codes</b></a>
+  </div>
+  <div class="row" style="padding-bottom: 10px;">
+    <a href="/exportdata?project={{project.id}}&export=haltwisereports&days=1" type="submit" class="btn btn-outline-primary mr-2">Previous Day's <b>Haltwise</b> Reports</a>
+    <a href="/exportdata?project={{project.id}}&export=inventorytracking" type="submit" class="btn btn-outline-info mr-2"><b>Inventory Tracking</b> Reports</a>
+  </div>
+{% endif %}

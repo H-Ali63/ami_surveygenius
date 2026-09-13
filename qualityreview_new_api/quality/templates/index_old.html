@@ -1,0 +1,493 @@
+{% load static %}
+
+# takes data from mainapp.views.py
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Survey Genius - Quality - A app</title>
+
+  <!-- plugins:css -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="{% static "vendors/iconfonts/mdi/css/materialdesignicons.min.css" %}">
+  <link rel="stylesheet" href="{% static "vendors/css/vendor.bundle.base.css" %}">
+  <link rel="stylesheet" href="{% static "vendors/css/vendor.bundle.addons.css" %}">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+
+
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static "images/favicon.png" %}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    @media only screen and (min-width:1366px)
+   {
+    li.lg {
+        display: none;
+    }
+  }
+  .navbar{
+    min-height:20px;
+  }
+
+  li:hover{
+    color: #fff;
+  }
+  .accordion {
+  background-color: white;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 13px;
+}
+
+.active, .accordion:hover {
+  background-color: purple;
+  color: white;
+}
+
+.panel {
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+</style>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-md-12 col-sm-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+     <!--<a class="navbar-brand brand-logo" href="index.html">-->
+	    <a class="navbar-brand brand-logo" href="/">
+          <img src="{% static "images/Axis_Logo.jpg" %}" alt="logo" style="width:50%;height:50px;" />
+      </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        <ul class="navbar-nav navbar-nav-left">
+          <li class="nav-item dropdown d-none d-xl-inline-block"><button class="btn btn-default" onclick="myFunction()">☰</button></li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <span class="profile-text">Hello, {{first_name}} {{last_name}} !</span>
+              <img class="img-xs rounded-circle" src="/media/{{employee_pic}}" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+	          {% comment %} {% if first_name != 'huluser'  and  first_name != 'Preethi' and first_name != 'GroupM' %}
+
+             	<a class="dropdown-item mt-2" href="/editprofile">
+                Manage Accounts
+	            </a>
+	          {%endif%} {% endcomment %}
+              <a class="dropdown-item" href="/logout">
+                Sign Out
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi-icon mdi mdi-menu">More</span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+	    {% if first_name != 'huluser'  and  first_name != 'Preethi' and first_name != 'GroupM' %}
+      <div id="myDIV">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar" style="overflow-y: auto;">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <div class="nav-link">
+                <div class="user-wrapper">
+                  <div class="text-wrapper">
+                    <p class="profile-name">{{first_name}} {{last_name}}</p>
+                    <div>
+                      <small class="designation text-muted">{{userrole}}, {{department}}</small>
+                      <span class="status-indicator online"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+      	   {% if userrole != "Verifier" %}
+              <li class="nav-item">
+                <a class="nav-link" href="/">
+                  <i class="menu-icon mdi mdi-television"></i>
+                  <span class="menu-title">Dashboard</span>
+                </a>
+              </li>
+      	   {% endif %}
+
+        {% endif %}
+
+           {% comment %} <li class="nav-item dropdown" style="width: 100%;">
+            <a href="#" data-toggle="collapse" data-target="#submenu-11" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+              <i class="fa fa-sun-o"style="font-size:18px;color:#979797;"></i>&nbsp;&nbsp;&nbsp;Employee Management System <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+              <ul id="submenu-11" class="collapse">
+                {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+                <a href="/hrms/EMSreports" style="font-size: 12px;"><button class="accordion"><i class="menu-icon mdi mdi-television" style="font-size:18px;color: #979797;"></i> &nbsp;&nbsp;Dashboard</button></a>
+                {% endif %}
+                <button class="accordion"><i class="fa fa-tripadvisor" style="font-size:18px;color: #979797;"></i> &nbsp;&nbsp;Performance Management System <i class="fa fa-fw fa-angle-down pull-right"></i></button>
+                <div class="panel">
+                  {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+                  <!-- <a href="/tasklist" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Daily Tasks</a> -->
+                  <a href="/AARreportsForm"class="dropdown-item nav-link"style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;AAR</a>
+
+                  <a href="/TodolistPms" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Daily To Do List</a>
+                  
+                  {% if request.user.user_employee.designation.name == 'Manager' or request.user.user_employee.designation.department.name == "CMDs office" or first_name == 'Shaileja' or first_name == 'Mohd kashif' or first_name == 'Riya' or first_name == 'Pooja' or first_name == 'Ajayata' and first_name != 'Sylvia' %}
+                  <a href="/PmsReportingView" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Department To Do List</a>
+                  {% endif %}
+                  {% if first_name == 'Shaileja' or first_name == 'Mohd kashif' or first_name == 'Radheya' %}
+                  <a href="/TaskStatusDeptPms" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Organization To Do List</a>
+                  {% endif %}
+                 {% endif %}
+                </div>
+
+                <button class="accordion"><i class="fa fa-money" style="font-size:18px;color: #979797;"></i> &nbsp;&nbsp;Appraisal <i class="fa fa-fw fa-angle-down pull-right"></i></button>
+                <div class="panel">
+                  {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+                  <a href="/appraisal/PmsAppraisalView" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Self Appraisal</a>
+                  <a href="/appraisal/AssessmentForm" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Assessment Form</a>
+                  {% endif %}
+                </div>
+
+                <a href="/hrms/policyportal" style="font-size: 12px;"><button class="accordion"><i class="menu-icon mdi mdi-coin" style="font-size:18px;color: #979797;"></i> &nbsp;&nbsp;HR Policies</button></a>
+                <div class="panel">
+                  {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                  {% endif %}
+                </div>
+              </ul>
+          </li>
+
+      {% endif %}
+
+      {% if department == 'Product' or department == 'Quality' or department == 'DRC' or department == "Management" %}
+        {% if userrole != "Verifier" and first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM' %}
+
+          <li class="nav-item">
+            <a class="nav-link" href="/sudash">
+              <i class="menu-icon mdi mdi-flash"></i>
+              <span class="menu-title">Superuser Dashboard</span>
+            </a>
+          </li>
+
+       {% endif %}
+	    {% endif %}
+
+   {% if department == 'Product' or department == 'Management' or department == 'Operations' or department == 'HR' or department == 'HR Analytics' %}
+     {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM' %}
+     <li class="nav-item dropdown" style="width: 100%;">
+      <a href="#" data-toggle="collapse" data-target="#submenu-1" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+        <i class="fa fa-sun-o"style="font-size:18px;color:#979797;"></i>&nbsp;&nbsp;&nbsp;Operations <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-1" class="collapse">
+            {% if department == 'Client' or department == 'Product' %}
+              <a href="/operations/clientdashboard" class="dropdown-item nav-link" style="margin-left:20px">Client Dashboard</a>
+            {% endif %}
+            <a href="/frpmdash?active_historic=active" class="dropdown-item nav-link" style="margin-left:20px">Operations Dashboard<br><br>(Active)</a>
+            <a href="/frpmdash?active_historic=historic" class="dropdown-item nav-link" style="margin-left:20px">Operations Dashboard<br><br>(Historic)</a>
+            <a href="/operations/villagesampling" class="dropdown-item nav-link" style="margin-left:20px">Village Sampling</a>
+            <a href="/operations/villagesampling/tv" class="dropdown-item nav-link" style="margin-left:20px">Village Sampling TV</a>
+            <a href="/operations/villagesamplingsingledash" class="dropdown-item nav-link" style="margin-left:20px">Village Sampling Single Dashboard</a>
+            <a href="/operations/overallprojectstatus" class="dropdown-item nav-link" style="margin-left:20px">Overall Project Status</a>
+            <a href="/scorecard" class="dropdown-item nav-link" style="margin-left:20px"> Scorecard</a>
+
+      {% endif %}
+    {% endif %} {% endcomment %}
+
+    {% comment %} {% if department == 'Product' or department == 'Management' or department == 'Operations' or department == 'HR' or department == 'HR Analytics' %}
+    {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM' %}
+        <a href="/surveyors" class="dropdown-item nav-link" style="margin-left:20px">Surveyor's Details</a>
+       
+         <a href="/surveytarget" class="dropdown-item nav-link" style="margin-left:20px">Survey Target</a>
+
+        <a href="/billing/VSsampling/Datareports" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">Survey Details</a>
+        <a href="/TabInventoryDetail" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">Tablet Handover</a>
+
+      </ul>
+    </li>
+    {% endif %}
+    {% endif %} {% endcomment %}
+
+	  {% comment %} {% if department == 'Product' or department == 'Quality' or department == 'DRC' or department == 'Finance' or department == 'Accounts' or department == "Management" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+    {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+
+          <li class="nav-item dropdown" style="width: 100%;">
+              <a href="#" data-toggle="collapse" data-target="#submenu-2" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+                <i class="fa fa-stack-overflow" style="font-size:18px;color: #979797;"></i>&nbsp;&nbsp;&nbsp;Product <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+              <ul id="submenu-2" class="collapse">
+                {% if department == 'Product' or department == 'Quality' or department == "Management"  %}
+                  <a href="/sudash" class="dropdown-item nav-link" style="margin-left:20px">Superuser Dashboard</a>
+
+                  {% endif %}
+                  <a href="/projectinfo" class="dropdown-item nav-link" style="margin-left:20px">Project information</a>
+                  <a href="/logs" class="dropdown-item nav-link" style="margin-left:20px">Logs</a>
+                  <a href="/assignsampling" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">Assign survey and sampling</a>
+                  {% if department == 'Data Analysis' or department == 'Product' %}
+                  <a href="/ami/amiprojects" class="dropdown-item nav-link " style="margin-left:20px;font-size: 12px;">AMI Reports</a>
+                  {% endif %}
+                  {% if department == 'Product' or department == 'Operations' and userrole == 'Head' or userrole == 'Manager' or userrole == 'Senior executive-Quality Assurance' or userrole == 'Quality Assurance' %}
+
+                  <a href="/planning" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">Planning</a>
+                  {% endif %}
+                  <a href="/billing/excel/FileUploadView" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">Upload Excel</a>
+                  {% if department == 'Product' %}
+                  <a href="/recharge/history" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">Mobile Recharge Records</a>
+                 {% endif %}
+              </ul>
+          </li>
+          {% endif %}
+    {% endif %} {% endcomment %}
+{% comment %} 
+	  {% if department == 'Product' or department == 'Quality' or department == 'DRC' or department == 'Finance' or department == 'Accounts' or department == "Management" or department == "Operations" and  first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM'%}
+	   {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+      <li class="nav-item dropdown" style="width: 100%;">
+        <a href="#" data-toggle="collapse" data-target="#submenu-3" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+        <i class="fa fa-github" style="font-size:18px;color: #979797;"></i>&nbsp;&nbsp;&nbsp;Gas Agencies <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-3" class="collapse">
+          <a href="/morningselfie" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Morning selfie</a>
+          <!-- <a href="/gasagent" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Gas Agency</a> -->
+          <a href="/SurveyProjectPage" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Gas Agency</a>
+          <a href="/purchase_activity" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Purchase Activity</a>
+        </ul>
+     </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">
+                <i class="menu-icon mdi mdi-account-key" style="color: #979797;"></i>
+                <span class="menu-title" style="font-size: 12px;">Profile</span>
+              </a>
+            </li>
+
+	  {% endif %}
+          {% endif %} {% endcomment %}
+
+
+
+
+
+{% comment %} 
+{% if  first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM'%}
+
+
+        <li class="nav-item dropdown" style="width: 100%;">
+        <a href="#" data-toggle="collapse" data-target="#submenu-25" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+        <i class="fa fa-sun-o" style="font-size:18px;color: #979797;"></i>&nbsp;&nbsp;&nbsp;Inventory <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+        <ul id="submenu-25" class="collapse">
+            <a href="/inventory/hul/ActivityStockOrders" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Activity Stock</a>
+            <a href="/inventory/hul/OrderDistributionatcity" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Order Distribution</a>
+            <a href="/inventory/hul/DivisionStockinCities" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Stock Distribution</a>
+            <a href="/inventory/hul/ConsumptionAtCity" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Consumption Distribution</a>
+            <a href="/inventory/hul/FinalStockReports" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Reports</a>
+            <a href="/inventory/hul/PhotoDesckuser" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Photo Deck</a>
+            <a href="/inventory/hul/AxisMyReports" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px;">&nbsp;&nbsp;&nbsp;Axis Reports</a>
+        </ul>
+    </li>
+
+{% endif %} {% endcomment %}
+
+
+	{% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+
+
+          {% if department == 'Product' or department == 'Management' or department == 'Operations' or department == 'Quality' or department == 'DRC' or userrole == 'Manager' or userrole == 'Senior executive-Quality Assurance' or userrole == 'Quality Assurance' and  first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM'%}
+
+          <li class="nav-item dropdown" style="width: 100%;">
+            <a href="#" data-toggle="collapse" data-target="#submenu-5" class="nav-link menu-title" style="color: inherit;display: inline-block;font-size: 12px;line-height: 1;vertical-align: middle;width:inherit">
+              <i class="fa fa-balance-scale"style="font-size:18px;color:#979797;"></i>&nbsp;&nbsp;Quality <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+            <ul id="submenu-5" class="collapse">
+              {% comment %} <a href="/selfaudit" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;&nbsp;Self Audit</a> {% endcomment %}
+              {% if department == 'Quality' or department == 'DRC' or userrole == 'Manager' or userrole == 'Senior executive-Quality Assurance' or userrole == 'Quality Assurance' or department == 'Product' or department == "Management" %}
+
+              <a href="/v2" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp Quality Review</a>
+              {% comment %} <a href="/bulkrecording" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Bulk Recordings</a> {% endcomment %}
+              
+
+              {% endif %}
+              {% comment %} <a href="/qualityaudit" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Quality Audit</a>
+              <a href="/bulkrecording_test" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Bulk Recordings Data</a>
+              <a href="/qcdash" class="dropdown-item nav-link" style="margin-left:20px;font-size: 12px">&nbsp;&nbsp;&nbsp;Quality Dashboard</a>
+              <a href="/frpmdash?active_historic=active" class="dropdown-item nav-link" style="margin-left:20px">Operations Dashboard<br><br>(Active)</a>
+              <a href="/frpmdash?active_historic=historic" class="dropdown-item nav-link" style="margin-left:20px">Operations Dashboard<br><br>(Historic)</a> {% endcomment %}
+            </ul>
+         </li>
+
+          {% comment %} <li class="nav-item">
+            <a class="nav-link" href="/scorecard">
+              <i class="menu-icon mdi mdi-signal"></i>
+              <span class="menu-title">Scorecard</span>
+            </a>
+          </li> {% endcomment %}
+
+	{% endif  %}
+
+          {% comment %} {% if department == 'Product' or department == 'Finance' or department == "Accounts" or department == "Management" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+		      {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+            <li class="nav-item">
+              <a class="nav-link" href="/expenses">
+                <i class="menu-icon mdi mdi-coin"></i>
+                <span class="menu-title">Expense Reports</span>
+              </a>
+            </li>
+		{% endif %} {% endcomment %}
+          {% comment %} {% endif %} {% endcomment %}
+          {% comment %} {% if department == 'Product' or department == 'Operations' or department == "Management" and  first_name != 'Preethi' and first_name != 'huluser'  and first_name != 'GroupM'%}
+	         {% if userrole != "Verifier" and  first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM'%}
+              <li class="nav-item">
+                <a class="nav-link" href="/assignsampling">
+                  <i class="menu-icon mdi mdi-mouse"></i>
+                  <span class="menu-title">Assign survey and sampling</span>
+                </a>
+              </li>
+	          {% endif %}
+          {% endif %} {% endcomment %}
+
+
+          {% if department == 'Product' or department == 'Finance' or department == "Accounts" or department == "Management" or department == "Operations" and  first_name != 'Preethi' and first_name != 'huluser' and first_name != 'GroupM'%}
+
+          <li class="nav-item lg">
+
+            <a class="nav-link" href="/logout">
+              <i class="menu-icon fa fa-sign-out"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+          </li>
+        {% endif %}
+
+        </ul>
+      </nav>
+    </div>
+{% comment %} {% else %}
+	<nav class="sidebar sidebar-offcanvas" id="sidebar">
+		 <ul class="nav">
+ <li class="nav-item">
+                <a class="nav-link" >
+                  <i></i>
+                  <span class="menu-title"></span>
+                </a>
+              </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/inventory/hul/ActivityStockOrders">
+                <i class="menu-icon mdi mdi-drone"></i>
+                <span class="menu-title">Stock</span>
+              </a>
+            </li>
+
+
+
+        <li class="nav-item">
+              <a class="nav-link" href="/inventory/hul/FinalStockReports">
+                <i class="menu-icon mdi mdi-drone"></i>
+                <span class="menu-title">Consumption Reports</span>
+              </a>
+        </li>
+
+
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="/inventory/hul/PhotoDeck">
+            <i class="menu-icon mdi mdi-drone"></i>
+            <span class="menu-title">Photo Deck</span>
+          </a>
+        </li>
+
+
+
+
+		</ul>
+        </nav> {% endcomment %}
+{%endif%}
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+            {% include htmlfilename %}          <!---here quality.html include--->
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+
+  <!-- Script -->
+  <script>
+    $(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".side-nav .collapse").on("hide.bs.collapse", function() {
+        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
+    });
+    $('.side-nav .collapse').on("show.bs.collapse", function() {
+        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");
+    });
+  })
+  </script>
+
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myDIV");
+      if (x.style.display === "none") {
+          x.style.display = "block";
+      } else {
+          x.style.display = "none";
+      }
+    }
+  </script>
+
+<script>
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+  </script>
+
+  <!-- plugins:js -->
+  <script src="{% static "vendors/js/vendor.bundle.base.js" %}"></script>
+  <script src="{% static "vendors/js/vendor.bundle.addons.js" %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static "js/off-canvas.js" %}"></script>
+  <script src="{% static "js/misc.js" %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static "js/dashboard.js" %}"></script>
+  <script src="{% static "js/analysis.js" %}"></script>
+  <!-- End custom js for this page-->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>  
+</body>
+
+</html>

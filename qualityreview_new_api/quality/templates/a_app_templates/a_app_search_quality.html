@@ -1,0 +1,211 @@
+
+{% if messages %}
+    {% for msg in messages %}
+        <script>
+            alert("{{ msg|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}
+{% if department == 'Quality' or department == 'Operations' or department == 'HR' or department == 'HR Analytics' or department == 'Product' or department == 'Data Analysis' or department == 'Finance' or department == 'Accounts' or department == 'DRC' or department == "Management" or request.user.user_employee.employee_id == '109955' or request.user.user_employee.employee_id == '113374' %}   {%comment%}added for ranjan{%endcomment%}
+
+  <div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Select a project</h4>
+          <form class="forms-sample" method="GET" action="#">
+            <div class="form-group">
+              <select name="project" class="form-control form-control-lg selectpicker" id="exampleFormControlSelect1" data-live-search="true" data-style="btn btn-light">
+                  <option value="">Choose ...</option>
+                  {% for project in projects %}
+                    <option value="{{project.pk}}" data-tokens="{{project.name}}">{{project.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display Reports Options if project is selected -->
+  {% if showOptionsFlag == True %}
+    <div class="row">
+      <!-- Timeframe for QC -->
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Summary Reports</h4>
+            <form class="form-sample" action="/geomismatch" method="get" onsubmit="return validateSummaryReportsForm(this);">
+              {% csrf_token %}
+              <input type="hidden" name="project" value="{{project}}">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tr>
+                    <td>Surveyor Code</td>
+                    <td>
+                      <input type="number" name="surveyor_req" value="000000" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td>
+                      <input type="date" name="fordate" value="" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="submit" name="submit" value="Quality Reports" class="btn btn-warning">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </form>
+            <script>
+              function validateSummaryReportsForm(form) {
+                var surveyor = form.surveyor_req.value.trim();
+                var fordate = form.fordate.value.trim();
+                if (!surveyor || !fordate) {
+                  alert('Please enter both Surveyor Code and Date before submitting.');
+                  return false;
+                }
+                return true;
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+      <!-- End of Timeframe for QC -->
+    </div>
+  {% endif %}
+
+  {% if department != 'Quality' %}
+    <div class="row">
+      <!-- Hotels List -->
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 grid-margin stretch-card">
+        <div class="card card-statistics">
+          <div class="card-body">
+            {% if department == "Product" and userrole == "Manager" or project.id == 399 and department == "Operations" or project.id == 400 and department == "Operations" or project.id == 402 and department == "Operations" or project.id == 419 and department == "Operations" or department == "Data Analysis" or request.user.user_employee.employee_id == '109955' or request.user.user_employee.employee_id == '113374' %}         {%comment%}added for ranjan{%endcomment%}
+              <h4 class="card-title">export data</h4>
+              <form class="form-sample" action="#" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="project" value="{{project}}">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <tr>
+                      <td>from Date</td>
+                      <td>
+                        <input type="date" name="fromdate" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>To Date</td>
+                      <td>
+                        <input type="date" name="todate" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="submit" name="submit" value="Text" class="btn btn-warning">
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+
+              <div class="float-right">
+                <h3 class="text-right mb-0">
+                  <a href="/download_status?project={{project}}">
+                      Download Status
+                  </a>
+                </h3>
+              </div>
+            {% endif %}
+            <p class="text-muted mt-3 mb-0">
+              <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> State, Location wise Hotel Listing
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Display NCCS is valid -->
+  <div class="row">
+    {% if nccs == True %}
+        <!-- Quality Reports -->
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 grid-margin stretch-card">
+          <div class="card card-statistics">
+            <div class="card-body">
+              <div class="clearfix">
+                <div class="float-left">
+                  <i class="mdi mdi-checkerboard text-primary icon-lg"></i>
+                </div>
+                <div class="float-right">
+                  <h3 class="text-right mb-0">
+                    <a href="/nccs?project={{project}}">
+                        NCCS
+                    </a>
+                  </h3>
+                </div>
+              </div>
+              <p class="text-muted mt-3 mb-0">
+                <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> NCCS report
+              </p>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+    <!-- Display Export Options if project is selected -->
+    {% if showDataFlag == True %}
+        <!-- Quality Reports -->
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 grid-margin stretch-card">
+          <div class="card card-statistics">
+            <div class="card-body">
+              <div class="clearfix">
+                <div class="float-left">
+                  <i class="mdi mdi-table text-danger icon-lg"></i>
+                </div>
+                <div class="float-right">
+                  <h3 class="text-right mb-0">
+                    <a href="/exportdata?project={{project}}">
+                        Export Data
+                    </a>
+                  </h3>
+                </div>
+              </div>
+              <p class="text-muted mt-3 mb-0">
+                <i class="mdi mdi-success-octagon mr-1" aria-hidden="true"></i> Export text and code data
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Reports -->
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 grid-margin stretch-card">
+          <div class="card card-statistics">
+            <div class="card-body">
+              <div class="clearfix">
+                <div class="float-left">
+                  <i class="mdi mdi-map text-danger icon-lg"></i>
+                </div>
+                <div class="float-right">
+                  <h3 class="text-right mb-0">
+                    <a href="/samplingbalance?project={{project}}">
+                        Balance of Sampling
+                    </a>
+                  </h3>
+                </div>
+              </div>
+              <p class="text-muted mt-3 mb-0">
+                <i class="mdi mdi-success-octagon mr-1" aria-hidden="true"></i> Export text and code data
+              </p>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+  </div>
+
+{% endif %}

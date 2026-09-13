@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        color: #333;
+        line-height: 1.5;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    /* Fixed Top Widgets Bar */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .search-box-container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 8px;
+    }
+
+    .search-form input[type="number"] {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        width: 200px;
+    }
+
+    .search-form input[type="submit"] {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .search-form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .count-widget {
+        background: #f1f3f5;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        min-width: 200px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .count-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .details-toggle {
+        border: 1px solid #adb5bd;
+        background: #fff;
+        color: #495057;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .details-toggle:hover {
+        background: #e9ecef;
+    }
+
+    .details-toggle .toggle-icon {
+        margin-left: 6px;
+        font-size: 10px;
+    }
+
+    .auditor-details-panel {
+        margin-top: 8px;
+        border: 1px solid #d9dee3;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .auditor-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .auditor-table th,
+    .auditor-table td {
+        padding: 7px 10px;
+        font-size: 13px;
+        border-bottom: 1px solid #eef1f4;
+    }
+
+    .auditor-table th {
+        background: #f6f8fa;
+        color: #5c6770;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-size: 11px;
+    }
+
+    .auditor-table td:last-child,
+    .auditor-table th:last-child {
+        text-align: right;
+        font-weight: 700;
+        color: #1f7a45;
+    }
+
+    .auditor-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Meta Details Grid */
+    .meta-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 6px;
+        margin-bottom: 30px;
+        border-left: 4px solid #007bff;
+    }
+
+    .meta-item b {
+        color: #555;
+    }
+
+    /* Form Auditing Sections */
+    .audit-section {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        padding: 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #eaeaea;
+        color: #495057;
+    }
+
+    .question-row {
+        margin-bottom: 25px;
+    }
+
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .question-text {
+        font-weight: 600;
+        max-width: 75%;
+    }
+
+    select, input[type="text"] {
+        padding: 6px 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: #fff;
+    }
+
+    .input-field-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .input-field-group label {
+        font-weight: 600;
+        min-width: 90px;
+        font-size: 13px;
+    }
+
+    .input-field-group input[type="text"] {
+        flex-grow: 1;
+    }
+
+    /* Flex-based layout wrapper for parameters side-by-side */
+    .flex-grid-2 {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .flex-col {
+        flex: 1;
+        min-width: 280px;
+        background: #fafafa;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+    }
+
+    .full-width-input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Bottom Actions Section */
+    .action-bar {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .btn-submit-score {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: 1px solid #28a745;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-submit-score:hover {
+        background-color: #218838;
+    }
+
+    .mismatch-zone {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        border-left: 2px solid #dee2e6;
+        padding-left: 20px;
+        flex-grow: 1;
+    }
+
+    .btn-mismatch {
+        padding: 10px 20px;
+        background-color: #dc3545;
+        color: white;
+        border: 1px solid #dc3545;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-mismatch:hover {
+        background-color: #c82333;
+    }
+
+    .mismatch-zone textarea {
+        height: 80px;
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    /* Floating Window Trigger Controls */
+    #myBtn, #myMisBtn {
+        position: fixed;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #343a40;
+        color: white;
+        cursor: pointer;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 15px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: background 0.2s ease;
+    }
+
+    #myBtn { bottom: 85px; background-color: #007bff; }
+    #myBtn:hover { background-color: #0056b3; }
+
+    #myMisBtn { bottom: 25px; background-color: #dc3545; }
+    #myMisBtn:hover { background-color: #bd2130; }
+
+    /* Modals CSS Setup */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 25px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .modal-content p b {
+        font-size: 18px;
+        color: #212529;
+    }
+
+    .modal-content form {
+        margin-top: 15px;
+    }
+
+    .modal-content form div {
+        margin-bottom: 15px;
+    }
+
+    .modal-content form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .modal-content form select, 
+    .modal-content form input[type="text"], 
+    .modal-content form input[type="date"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-content form input[type="submit"],
+    .modal-content form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+    .modal-content form input[type="submit"]:hover,
+    .modal-content form button:hover {
+        background-color: #0056b3;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <div class="search-box-container">
+            <form method="POST" class="search-form">
+                {% csrf_token %}
+                <input type="number" placeholder="Enter UID to Search..." name="uid" />
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        {% if request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.name == "Assistant_Manager" or request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Senior executive-Quality Assurance" and request.user.user_employee.designation.name == "Assistant_Manager" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Quality Assurance" %}
+        <div class="count-widget">
+            <div class="count-header">
+                <div>
+                    <span><b>Today's Total Count:</b></span> <span style="color:green; font-weight:700;">{{auditor_count_form}}</span>
+                </div>
+                <button type="button" class="details-toggle" onclick="toggleAuditorDetails(this)" aria-expanded="false">
+                    Show Details <span class="toggle-icon">▼</span>
+                </button>
+            </div>
+            <div class="auditor-details-panel" hidden>
+                <table class="auditor-table">
+                    <thead>
+                        <tr>
+                            <th>Auditor</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quality_record in quality_project_wise_records %}
+                        <tr>
+                            <td>{{quality_record.quality_auditor}}</td>
+                            <td>{{quality_record.project_name__count}}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No auditor details available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="count-widget">
+            <span><b>Today's Total Count:</b></span> <span style="color:green; font-weight:700;">{{auditor_count_form}}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="meta-details-grid">
+        <div class="meta-item"><b>UID:</b> {% if status == True %}<span>{{uid}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Project Name:</b> {% if status == True %}<span>{{project_name}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Surveyor Name:</b> {% if status == True %}<span>{{ surveyor_id }} - {{surveyor_name}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Fr Name:</b> {% if status == True %}<span>{{tl_name}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Interview Date:</b> {% if status == True %}<span>{{interview_date}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Duration:</b> {% if status == True %}<span>{{interview_duration}}</span>{% endif %}</div>
+        <div class="meta-item"><b>QA Name:</b> {% if status == True %}<span>{{quality_auditor_name}}</span>{% endif %}</div>
+        <div class="meta-item"><b>Audit Date:</b> {% if status == True %}<span>{{audit_date}}</span>{% endif %}</div>
+    </div>
+
+    <div class="audit-section">
+        
+        <div class="section-title">Section A</div>
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">1. Question Skipping/ Incomplete Recording</span>
+                <select id="section_A_question_skipping">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_A_question_skipping_reason" onchange="reasontype('section_A_question_skipping_reason','section_A_remarks_1_div','section_A_remarks_1','section_A_remarks_1_others_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionAIssueList %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+
+            <div id="section_A_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks 1:</label>
+                <input type="text" id="section_A_remarks_1" />
+            </div>
+            <div id="section_A_remarks_1_others_div" class="input-field-group" style="display:none;">
+                <label>Others:</label>
+                <input type="text" id="section_A_remarks_2" />
+            </div>
+        </div>
+
+        <div class="section-title">Section B</div>
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">2. Questionnaire / Subject Knowledge</span>
+                <select id="section_B_question_subject_knowledge">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_B_question_questionnaire_subject_reason" onchange="reasontype('section_B_question_questionnaire_subject_reason','section_B_remarks_1_div','section_B_remarks_1','section_B_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionBIssueList %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+
+            <div id="section_B_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks 1:</label>
+                <input type="text" id="section_B_remarks_1" />
+            </div>
+            <div id="section_B_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Others:</label>
+                <input type="text" id="section_B_remarks_2" />
+            </div>
+        </div>
+
+        <div class="section-title">Section C</div>
+        
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">3. Voice Clarity</span>
+                <select id="section_C_voice_clarity">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_C_question_voice_clarity_reason" onchange="reasontype('section_C_question_voice_clarity_reason','section_C_question_1_remarks_1_div','section_C_question_1_remarks_1','section_C_question_1_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionCIssueList %}
+                    {% if "Voice Clarity" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_C_question_1_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks 1:</label>
+                <input type="text" id="section_C_question_1_remarks_1" />
+            </div>
+            <div id="section_C_question_1_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Other:</label>
+                <input type="text" id="section_C_question_1_remarks_2" />
+            </div>
+        </div>
+
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">4. Questioning Technique</span>
+                <select id="section_C_question_techniques">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_C_question_questioning_technique_reason" onchange="reasontype('section_C_question_questioning_technique_reason','section_C_question_2_remarks_1_div','section_C_question_2_remarks_1','section_C_question_2_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionCIssueList %}
+                    {% if "Questioning Techniques" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_C_question_2_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks:</label>
+                <input type="text" id='section_C_question_2_remarks_1' />
+            </div>
+            <div id="section_C_question_2_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Other:</label>
+                <input type="text" id="section_C_question_2_remarks_2" />
+            </div>
+        </div>
+
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">5. Convincing Skills</span>
+                <select id="section_C_convincing_skills">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_C_question_convincing_skills_reason" onchange="reasontype('section_C_question_convincing_skills_reason','section_C_question_3_remarks_1_div','section_C_question_3_remarks_1','section_C_question_3_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionCIssueList %}
+                    {% if "Convincing skills" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_C_question_3_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks:</label>
+                <input type="text" id="section_C_question_3_remarks_1" />
+            </div>
+            <div id="section_C_question_3_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Other:</label>
+                <input type="text" id="section_C_question_3_remarks_2" />
+            </div>
+        </div>
+
+        <div class="section-title">Section D</div>
+        
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">6. Being Polite & Courteous</span>
+                <select id="section_D_polite_courteous">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_D_question_polite_courteous_reason" onchange="reasontype('section_D_question_polite_courteous_reason','section_D_question_1_remarks_1_div','section_D_question_1_remarks_1','section_D_question_1_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionDIssueList %}
+                    {% if "Being Polite & courteous" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_D_question_1_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks:</label>
+                <input type="text" id="section_D_question_1_remarks_1" />
+            </div>
+            <div id="section_D_question_1_remarks_1_other_div" class="input-field-group" style="display:none">
+                <label>Other:</label>
+                <input type="text" id="section_D_question_1_remarks_2" />
+            </div>
+        </div>
+
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">7. Rate of Speech</span>
+                <select id="section_D_rate_of_speech">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_D_question_rate_speech_reason" onchange="reasontype('section_D_question_rate_speech_reason','section_D_question_2_remarks_1_div','section_D_question_2_remarks_1','section_D_question_2_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionDIssueList %}
+                    {% if "Rate of Speech" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_D_question_2_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks:</label>
+                <input type="text" id="section_D_question_2_remarks_1" />
+            </div>
+            <div id="section_D_question_2_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Other:</label>
+                <input type="text" id="section_D_question_2_remarks_2" />
+            </div>
+        </div>
+
+        <div class="question-row">
+            <div class="question-header">
+                <span class="question-text">8. Professionalism / Energetic / Enthusiastic</span>
+                <select id="section_D_professionalism">
+                    
+                    <option value="5">Excellent</option>
+                    <option value="4">Very Good</option>
+                    <option value="3">Good</option>
+                    <option value="2">Poor</option>
+                    <option value="1">Very Poor</option>
+                </select>
+            </div>
+            <div class="input-field-group">
+                <label>Issue Type:</label>
+                <select id="section_D_question_professional_reason" onchange="reasontype('section_D_question_professional_reason','section_D_question_3_remarks_1_div','section_D_question_3_remarks_1','section_D_question_3_remarks_1_other_div')">
+                    <option value="404">Default</option>
+                    {% for x in sectionDIssueList %}
+                    {% if "Professionalism/ Energetic/Enthusiastic" in x.issues %}
+                    <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                    {% endif %}
+                    {%endfor%}
+                    <option value="401">Others</option>
+                </select>
+            </div>
+            <div id="section_D_question_3_remarks_1_div" class="input-field-group" style="display:none;">
+                <label>Remarks:</label>
+                <input type="text" id="section_D_question_3_remarks_1" />
+            </div>
+            <div id="section_D_question_3_remarks_1_other_div" class="input-field-group" style="display:none;">
+                <label>Other:</label>
+                <input type="text" id="section_D_question_3_remarks_2" />
+            </div>
+        </div>
+
+        <div class="section-title">Section E</div>
+        
+        <div class="flex-grid-2" style="margin-bottom: 20px;">
+            <div class="flex-col">
+                <div class="question-header">
+                    <span class="question-text">Variation</span>
+                    <select id="section_D_variation">
+                        <option value="0">No</option>
+                        <option value="-10">Yes</option>
+                    </select>
+                </div>
+                <div class="input-field-group">
+                    <label>Issue Type:</label>
+                    <select id="section_E_question_variation_reason" onchange="reasontype('section_E_question_variation_reason','section_E_question_1_remarks_1_div','section_E_question_variation_remarks_1',null)" style="width:100%">
+                        <option value="404">Default</option>
+                        {% for x in sectionEIssueList %}
+                        {% if "Variation" in x.issues %}
+                        <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                        {% endif %}
+                        {%endfor%}
+                    </select>
+                </div>
+                <div id="section_E_question_1_remarks_1_div" class="input-field-group" style="display:none;">
+                    <label>Remarks:</label>
+                    <input type="text" id="section_E_question_variation_remarks_1" />
+                </div>
+            </div>
+
+            <div class="flex-col">
+                <div class="question-header">
+                    <span class="question-text">Force Survey</span>
+                    <select id="section_D_force_survey">
+                        <option value="0">No</option>
+                        <option value="-10">Yes</option>
+                    </select>
+                </div>
+                <div class="input-field-group">
+                    <label>Issue Type:</label>
+                    <select id="section_E_question_force_survey_reason" onchange="reasontype('section_E_question_force_survey_reason','section_E_question_2_remarks_1_div','section_E_question_force_survey_remarks_1',null)" style="width:100%">
+                        <option value="404">Default</option>
+                        {% for x in sectionEIssueList %}
+                        {% if "Force Survey" in x.issues %}
+                        <option value="{{x.issue_id}}">{{x.related_question}}</option>
+                        {% endif %}
+                        {%endfor%}
+                    </select>
+                </div>
+                <div id="section_E_question_2_remarks_1_div" class="input-field-group" style="display:none;">
+                    <label>Remarks:</label>
+                    <input type="text" id="section_E_question_force_survey_remarks_1" />
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-grid-2" style="margin-bottom: 20px;">
+            <div class="flex-col" style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="question-text">Movement During Interview</span>
+                <select id="section_D_moment_during_interview">
+                    <option value="0">No</option>
+                    <option value="-10">Yes</option>
+                </select>
+            </div>
+            <div class="flex-col" style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="question-text">Geo Tagging</span>
+                <select id="section_D_geo_tagging">
+                    <option value="0">No</option>
+                    <option value="-10">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex-grid-2" style="margin-bottom: 20px;">
+            <div class="flex-col" style="display: flex; justify-content: space-between; align-items: center; max-width: calc(50% - 10px);">
+                <span class="question-text">Fake Form</span>
+                <select id="section_D_fake_form">
+                    <option value="0">No</option>
+                    <option value="-10">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-field-group">
+            <label>Other Remarks:</label>
+            <input type="text" id="section_D_remarks" class="full-width-input" />
+        </div>
+        
+        <div class="section-title" style="margin-top:30px;">Section F</div>
+        <div class="flex-grid-2">
+            <div class="flex-col">
+                <div class="question-header">
+                    <span class="question-text">Mismatch Form</span>
+                    <select id="section_F_mismatch">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div id="section_F_question_1_remarks_1_div" class="input-field-group">
+                    <label>Remarks:</label>
+                    <input type="text" id="section_F_question_mismatch_remarks_1" class="full-width-input" />
+                </div>
+            </div>
+
+            <div class="flex-col">
+                <div class="question-header">
+                    <span class="question-text">Audio Not Found</span>
+                    <select id="section_F_audio_not_found">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div id="section_F_question_2_remarks_1_div" class="input-field-group">
+                    <label>Remarks:</label>
+                    <input type="text" id="section_F_question_audio_not_found_remarks_1" class="full-width-input" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% if status == True %}
+    <div class="action-bar">
+        <button onclick="calculateScores()" class="btn-submit-score">Add Score</button>
+        
+        <div class="mismatch-zone">
+            <form id="misMatchedForm" method="post" action="" hidden>
+                {% csrf_token %}
+                <input type="text" name="mis_match_uid" value="{{uid}}" />
+                <input type="text" name="mis_project_name" value="{{project_name}}" />
+                <input type="text" name="mis_surveyor_name" value="{{surveyor_name}}" />
+                <input type="text" name="mis_surveyor_id" value="{{surveyor_id}}" />
+                <input type="text" name="mis_tl_name" value="{{tl_name}}" />
+                <input type="text" name="mis_interview_date" value="{{interview_date}}" />
+                <input type="text" name="mis_interview_duration" value="{{interview_duration}}" />
+                <input type="text" name="mis_auditor_name" value="{{quality_auditor_name}}" />
+                <input type="text" name="mis_audit_date" value="{{audit_date}}" />
+                <input id="mis_match_reason_review" type="text" name="mis_match_reason_review" value="">
+            </form>
+            <button onclick="MismatchForm()" class="btn-mismatch">MisMatch</button>
+            <textarea id="mis_match_reason" placeholder="Enter reason details here..."></textarea>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<form id="quality_report_test" method="post" action="" hidden>
+    {% csrf_token %}
+    <input type="text" name="uid_id" id="uid_id" value={{uid}} hidden />
+    <input type="text" name="project_id" id="project_id" value={{project_id}} hidden />
+    <input type="text" name="surveyor_id" id="surveyor_id" value="{{surveyor_id}}" hidden />
+    <input type="text" name="project_name" id="project_name" value="{{project_name}}" hidden />
+    <input type="text" name="surveyor_name" id="surveyor_name" value="{{surveyor_name}}" hidden />
+    <input type="text" name="fr_name" id="fr_name" value="{{tl_name}}" hidden />
+    <input type="text" name="qa_name" id="qa_name" value="{{quality_auditor_name}}" hidden />
+    <input type="text" name="interview_date" id="interview_date" value="{{interview_date}}" hidden />
+    <input type="text" name="auditing_date" id="auditing_date" value="{{audit_date}}" hidden />
+    <input type="text" name="interview_duration" id="interview_duration" value="{{interview_duration}}" hidden />
+    <input type="text" id="section_A_question_skipping_" name="section_A_question_skipping_" value="" hidden />
+    <input type="text" id="section_B_question_subject_knowledge_" name="section_B_question_subject_knowledge_" value="" hidden />
+    <input type="text" id="section_C_voice_clarity_" name="section_C_voice_clarity_" value="" hidden />
+    <input type="text" id="section_C_question_techniques_" name="section_C_question_techniques_" value="" hidden />
+    <input type="text" id="section_C_convincing_skills_" name="section_C_convincing_skills_" value="" hidden />
+    <input type="text" id="section_D_variation_" name="section_D_variation_" value="" hidden />
+    <input type="text" id="section_D_force_survey_" name="section_D_force_survey_" value="" hidden />
+    <input type="text" id="section_D_moment_during_interview_" name="section_D_moment_during_interview_" value="" hidden />
+    <input type="text" id="section_D_geo_tagging_" name="section_D_geo_tagging_" value="" hidden />
+    <input type="text" id="section_D_fake_form_" name="section_D_fake_form_" value="" hidden />
+    <input type="text" id="section_D_polite_courteous_" name="section_D_polite_courteous_" value="" hidden />
+    <input type="text" id="section_D_rate_of_speech_" name="section_D_rate_of_speech_" value="" hidden />
+    <input type="text" id="section_D_professionalism_" name="section_D_professionalism_" value="" hidden />
+    <input type="text" id="section_A_remarks_1_" name="section_A_remarks_1_" value="" hidden />
+    <input type="text" id="section_A_remarks_2_" name="section_A_remarks_2_" value="" hidden />
+    <input type="text" id="section_B_remarks_1_" name="section_B_remarks_1_" value="" hidden />
+    <input type="text" id="section_B_remarks_2_" name="section_B_remarks_2_" value="" hidden />
+    <input type="text" id="section_C_remarks_1_" name="section_C_remarks_1_" value="" hidden />
+    <input type="text" id="section_C_remarks_2_" name="section_C_remarks_2_" value="" hidden />
+    <input type="text" id="section_C_remarks_questioning_technique_1_" name="section_C_remarks_questioning_technique_1_" value="" hidden />
+    <input type="text" id="section_C_remarks_questioning_technique_2_" name="section_C_remarks_questioning_technique_2_" value="" hidden />
+    <input type="text" id="section_C_remarks_convicing_skills_1_" name="section_C_remarks_convicing_skills_1_" value="" hidden />
+    <input type="text" id="section_C_remarks_convicing_skills_2_" name="section_C_remarks_convicing_skills_2_" value="" hidden />
+    <input type="text" id="section_D_remarks_" name="section_D_remarks_" value="" hidden />
+    <input type="text" id="section_D_remarks_polite_courages_1_" name="section_D_remarks_polite_courages_1_" value="" hidden />
+    <input type="text" id="section_D_remarks_polite_courages_2_" name="section_D_remarks_polite_courages_2_" value="" hidden />
+    <input type="text" id="section_D_remarks_rate_of_speech_1_" name="section_D_remarks_rate_of_speech_1_" value="" hidden />
+    <input type="text" id="section_D_remarks_rate_of_speech_2_" name="section_D_remarks_rate_of_speech_2_" value="" hidden />
+    <input type="text" id="section_D_remarks_pro_energy_1_" name="section_D_remarks_pro_energy_1_" value="" hidden />
+    <input type="text" id="section_D_remarks_pro_energy_2_" name="section_D_remarks_pro_energy_2_" value="" hidden />
+    <input type="text" id="section_E_question_variation_remarks_1_" name="section_E_question_variation_remarks_1_" value="" hidden />
+    <input type="text" id="section_E_question_force_survey_remarks_1_" name="section_E_question_force_survey_remarks_1_" value="" hidden />
+    <input type="text" id="section_A_question_skipping_issue" name="section_A_question_skipping_issue" value="404" hidden />
+    <input type="text" id="section_B_question_questionnaire_subject_issue" name="section_B_question_questionnaire_subject_issue" value="404" hidden />
+    <input type="text" id="section_C_question_voice_clarity_issue" name="section_C_question_voice_clarity_issue" value="404" hidden />
+    <input type="text" id="section_C_question_questioning_technique_issue" name="section_C_question_questioning_technique_issue" value="404" hidden />
+    <input type="text" id="section_C_question_convincing_skills_issue" name="section_C_question_convincing_skills_issue" value="404" hidden />
+    <input type="text" id="section_D_question_polite_courteous_issue" name="section_D_question_polite_courteous_issue" value="404" hidden />
+    <input type="text" id="section_D_question_rate_speech_issue" name="section_D_question_rate_speech_issue" value="404" hidden />
+    <input type="text" id="section_D_question_professional_issue" name="section_D_question_professional_issue" value="404" hidden />
+    <input type="text" id="section_E_question_variation_issue" name="section_E_question_variation_issue" value="404" hidden />
+    <input type="text" id="section_E_question_force_survey_issue" name="section_E_question_force_survey_issue" value="404" hidden />
+    <input type="text" id="section_F_mismatch_" name="section_F_mismatch_" value="0" hidden />
+    <input type="text" id="section_F_question_mismatch_remarks_1_" name="section_F_question_mismatch_remarks_1_" value="" hidden />
+    <input type="text" id="section_F_audio_not_found_" name="section_F_audio_not_found_" value="0" hidden />
+    <input type="text" id="section_F_question_audio_not_found_remarks_1_" name="section_F_question_audio_not_found_remarks_1_" value="" hidden />
+</form>
+
+<button id="myBtn" title="Export">Export Options</button>
+<button id="myMisBtn" title="MisMatch Management">MisMatch Setup</button>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p><b>Quality Review Options</b></p>
+
+        {% if request.user.user_employee.designation.department.name == "Quality" %}
+        {% if request.user.user_employee.designation.name == "Quality Assurance Executive" or request.user.user_employee.designation.name == "Assistant_Manager" or request.user.user_employee.designation.id == 201 %}
+        <form method="get" action="">
+            {% csrf_token %}
+            <div>
+                <label>Auditor ID:</label>
+                <input id="quality_auditor_id" name="quality_auditor_id" type="text" value="{{quality_auditor_id}}" />
+            </div>
+            <div>
+                <label>Auditor Date:</label>
+                <input type="date" name="auditor_date" id="auditor_date" />
+            </div>
+            <input type="text" name="filter" value="filter" hidden />
+            <input type="submit" value="GET" />
+        </form>
+        {%endif%}
+        {%endif%}
+
+        {% if request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Assistant_Manager" or request.user.user_employee.designation.name == "Senior executive-Quality Assurance" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Quality Assurance" or request.user.user_employee.designation.id == 201 %}
+        <form method="get" action="">
+            {% csrf_token %}
+            <div>
+                <label>Project Name:</label>
+                <select name="auditor_project_name">
+                    <option value="default">Select Project</option>
+                    {% for project in active_projects_list %}
+                    <option value="{{project.project_name}}">{{project.project_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Auditor Name:</label>
+                <select name="quality_auditor_name">
+                    <option value="default">Select Auditor</option>
+                    {% for aud in auditor_list %}
+                    <option value="{{aud.quality_auditor}}">{{aud.quality_auditor}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="display: flex; gap:10px;">
+                <div style="flex: 1;">
+                    <label>To Date:</label>
+                    <input id="auditor_review_start_date" name="startdate" type="date" />
+                </div>
+                <div style="flex: 1;">
+                    <label>From Date:</label>
+                    <input id="auditor_review_end_date" name="enddate" type="date" />
+                </div>
+            </div>
+
+            <div style="display: flex; gap:10px;">
+                <div style="flex: 1;">
+                    <label>Interview To:</label>
+                    <input id="interview_start_date" name="interview_startdate" type="date" />
+                </div>
+                <div style="flex: 1;">
+                    <label>Interview From:</label>
+                    <input id="interview_end_date" name="interview_enddate" type="date" />
+                </div>
+            </div>
+
+            <input type="text" name="filter" value="filter" hidden />
+            <input type="text" value="" id="selected_form" name="selected_form" hidden />
+            
+            <button onclick="submitForm('fetch')" type="submit" style="background-color: #28a745;">Summary Detailed</button>
+            <button onclick="submitForm('short_summary')" type="submit" style="background-color: #17a2b8;">Details</button>
+            <button onclick="submitForm('detailed_summary')" type="submit" style="background-color: #ffc107; color: #212529;">Short Summary Detailed</button>
+        </form>
+        {% endif %}
+
+        {% if request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Assistant_Manager" or request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.department.name == "Quality" and request.user.user_employee.designation.name == "Senior executive-Quality Assurance" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Manager" or request.user.user_employee.designation.department.name == "DRC" and request.user.user_employee.designation.name == "Quality Assurance" %}
+        <div style="margin-top:20px; border-top: 1px solid #dee2e6; padding-top:15px;">
+            <p style="font-size: 14px; font-weight: 600;">Hourly Report Generation</p>
+            <form method="get" action="">
+                {%csrf_token%}
+                <input type="text" name="hourly_report" hidden />
+                <div>
+                    <label>Auditor Name:</label>
+                    <select name="hourly_auditor_name">
+                        <option value="default">Select Auditor</option>
+                        {% for aud in auditor_list %}
+                        <option value="{{aud.quality_auditor}}$-${{aud.quality_auditor_id}}">{{aud.quality_auditor}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Select Date:</label>
+                    <input type="date" id="hourly_date" name="Pickdate" />
+                </div>
+                <input type="submit" value="Get Hourly Report" style="background-color: #6c757d;" />
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div id="myMisModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p><b>Quality MisMatch Review</b></p>
+        <form method="get" action="/aapp/mismatch">
+            {% csrf_token %}
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label>Start Date:</label>
+                    <input type="date" name="auditor_start_date" />
+                </div>
+                <div style="flex:1;">
+                    <label>End Date:</label>
+                    <input type="date" name="auditor_end_date" />
+                </div>
+            </div>
+            <div>
+                <label>Auditor Name:</label>
+                <select name="quality_auditor_name">
+                    <option value="default">Select Auditor</option>
+                    {% for aud in auditor_list %}
+                    <option value="{{aud.quality_auditor}}">{{aud.quality_auditor}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="GET Reports" style="background-color: #dc3545;" />
+        </form>
+    </div>
+</div>
+
+<script>
+    function MismatchForm() {
+        if (document.getElementById("mis_match_reason").value.trim().length > 0) {
+            document.getElementById("mis_match_reason_review").value = document.getElementById("mis_match_reason").value;
+            document.getElementById("misMatchedForm").submit();
+        }
+    }
+
+    function proj_quality() {
+        var projData = document.getElementById("selected_proj").value.split("$-$");
+        document.getElementById("proj_id").value = projData[0];
+        document.getElementById("proj_name").value = projData[1];
+        document.getElementById("proj_quality").submit();
+    }
+
+    function calculateScores() {
+        document.getElementById("section_D_variation_").value = document.getElementById("section_D_variation").value;
+        document.getElementById("section_D_force_survey_").value = document.getElementById("section_D_force_survey").value;
+        document.getElementById("section_D_moment_during_interview_").value = document.getElementById("section_D_moment_during_interview").value;
+        document.getElementById("section_D_geo_tagging_").value = document.getElementById("section_D_geo_tagging").value;
+        document.getElementById("section_D_fake_form_").value = document.getElementById("section_D_fake_form").value;
+        document.getElementById("section_D_remarks_").value = document.getElementById("section_D_remarks").value;
+
+        document.getElementById("section_A_question_skipping_").value = document.getElementById("section_A_question_skipping").value;
+        document.getElementById("section_A_remarks_1_").value = document.getElementById("section_A_remarks_1").value;
+        document.getElementById("section_A_remarks_2_").value = document.getElementById("section_A_remarks_2").value;
+
+        document.getElementById("section_B_question_subject_knowledge_").value = document.getElementById("section_B_question_subject_knowledge").value;
+        document.getElementById("section_B_remarks_1_").value = document.getElementById("section_B_remarks_1").value;
+        document.getElementById("section_B_remarks_2_").value = document.getElementById("section_B_remarks_2").value;
+
+        document.getElementById("section_C_voice_clarity_").value = document.getElementById("section_C_voice_clarity").value;
+        document.getElementById("section_C_question_techniques_").value = document.getElementById("section_C_question_techniques").value;
+        document.getElementById("section_C_convincing_skills_").value = document.getElementById("section_C_convincing_skills").value;
+        document.getElementById("section_C_remarks_1_").value = document.getElementById("section_C_question_1_remarks_1").value;
+        document.getElementById("section_C_remarks_2_").value = document.getElementById("section_C_question_1_remarks_2").value;
+        document.getElementById("section_C_remarks_questioning_technique_1_").value = document.getElementById("section_C_question_2_remarks_1").value;
+        document.getElementById("section_C_remarks_questioning_technique_2_").value = document.getElementById("section_C_question_2_remarks_2").value;
+        document.getElementById("section_C_remarks_convicing_skills_1_").value = document.getElementById("section_C_question_3_remarks_1").value;
+        document.getElementById("section_C_remarks_convicing_skills_2_").value = document.getElementById("section_C_question_3_remarks_2").value;
+
+        document.getElementById("section_D_polite_courteous_").value = document.getElementById("section_D_polite_courteous").value;
+        document.getElementById("section_D_rate_of_speech_").value = document.getElementById("section_D_rate_of_speech").value;
+        document.getElementById("section_D_professionalism_").value = document.getElementById("section_D_professionalism").value;
+        document.getElementById("section_D_remarks_polite_courages_1_").value = document.getElementById("section_D_question_1_remarks_1").value;
+        document.getElementById("section_D_remarks_polite_courages_2_").value = document.getElementById("section_D_question_1_remarks_2").value;
+        document.getElementById("section_D_remarks_rate_of_speech_1_").value = document.getElementById("section_D_question_2_remarks_1").value;
+        document.getElementById("section_D_remarks_rate_of_speech_2_").value = document.getElementById("section_D_question_2_remarks_2").value;
+        document.getElementById("section_D_remarks_pro_energy_1_").value = document.getElementById("section_D_question_3_remarks_1").value;
+        document.getElementById("section_D_remarks_pro_energy_2_").value = document.getElementById("section_D_question_3_remarks_2").value;
+
+        document.getElementById("section_E_question_variation_remarks_1_").value = document.getElementById("section_E_question_variation_remarks_1").value;
+        document.getElementById("section_E_question_force_survey_remarks_1_").value = document.getElementById("section_E_question_force_survey_remarks_1").value;
+
+        document.getElementById("section_F_mismatch_").value = document.getElementById("section_F_mismatch").value;
+        document.getElementById("section_F_question_mismatch_remarks_1_").value = document.getElementById("section_F_question_mismatch_remarks_1").value;
+        document.getElementById("section_F_audio_not_found_").value = document.getElementById("section_F_audio_not_found").value;
+        document.getElementById("section_F_question_audio_not_found_remarks_1_").value = document.getElementById("section_F_question_audio_not_found_remarks_1").value;
+
+        document.getElementById("quality_report_test").submit();
+    }
+
+    function submitForm(type) {
+        document.getElementById("selected_form").value = type;
+    }
+
+    function toggleAuditorDetails(button) {
+        var details = button.closest(".count-widget").querySelector(".auditor-details-panel");
+        var icon = button.querySelector(".toggle-icon");
+        var isHidden = details.hasAttribute("hidden");
+
+        if (isHidden) {
+            details.removeAttribute("hidden");
+            button.childNodes[0].nodeValue = "Hide Details ";
+            if (icon) {
+                icon.textContent = "▲";
+            }
+            button.setAttribute("aria-expanded", "true");
+        } else {
+            details.setAttribute("hidden", "hidden");
+            button.childNodes[0].nodeValue = "Show Details ";
+            if (icon) {
+                icon.textContent = "▼";
+            }
+            button.setAttribute("aria-expanded", "false");
+        }
+    }
+
+    // Modal Control Configuration Engine
+    var modal = document.getElementById("myModal");
+    var mis_modal = document.getElementById("myMisModal");
+
+    var btn = document.getElementById("myBtn");
+    var mis_btn = document.getElementById("myMisBtn");
+
+    var spans = document.getElementsByClassName("close");
+
+    btn.onclick = function () { modal.style.display = "block"; }
+    mis_btn.onclick = function () { mis_modal.style.display = "block"; }
+
+    for(var i=0; i<spans.length; i++){
+        spans[i].onclick = function() {
+            modal.style.display = "none";
+            mis_modal.style.display = "none";
+        }
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) modal.style.display = "none";
+        if (event.target == mis_modal) mis_modal.style.display = "none";
+    }
+
+    function reasontype(select_id, select_remark_div_id, select_remark_input_id, select_other_div) {
+        var issue_value = document.getElementById(select_id).value;
+        
+        var mappings = {
+            "section_A_question_skipping_reason": "section_A_question_skipping_issue",
+            "section_B_question_questionnaire_subject_reason": "section_B_question_questionnaire_subject_issue",
+            "section_C_question_voice_clarity_reason": "section_C_question_voice_clarity_issue",
+            "section_C_question_questioning_technique_reason": "section_C_question_questioning_technique_issue",
+            "section_C_question_convincing_skills_reason": "section_C_question_convincing_skills_issue",
+            "section_D_question_polite_courteous_reason": "section_D_question_polite_courteous_issue",
+            "section_D_question_rate_speech_reason": "section_D_question_rate_speech_issue",
+            "section_D_question_professional_reason": "section_D_question_professional_issue",
+            "section_E_question_variation_reason": "section_E_question_variation_issue",
+            "section_E_question_force_survey_reason": "section_E_question_force_survey_issue"
+        };
+
+        if (mappings[select_id]) {
+            document.getElementById(mappings[select_id]).value = issue_value;
+        }
+
+        if (issue_value != "401") {
+            document.getElementById(select_remark_div_id).style["display"] = "flex";
+            document.getElementById(select_remark_input_id).value = "";
+            if (select_other_div != null) {
+                document.getElementById(select_other_div).style["display"] = "none";
+            }
+        } else {
+            if (select_other_div != null) {
+                document.getElementById(select_other_div).style["display"] = "flex";
+            }
+            document.getElementById(select_remark_div_id).style["display"] = "none";
+            document.getElementById(select_remark_input_id).value = "";
+        }
+    }
+</script>
+</body>
+</html>

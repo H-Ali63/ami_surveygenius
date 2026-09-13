@@ -1,0 +1,5 @@
+@echo off
+cd C:\venv\qualityreview3
+call C:\venv\Scripts\activate
+python manage.py populate_survey >> C:\path\to\log\survey_log.txt 2>&1
+deactivate

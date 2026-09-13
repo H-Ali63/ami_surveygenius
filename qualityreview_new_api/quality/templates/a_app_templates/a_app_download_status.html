@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Surveyor Responses</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+{% comment %} {% if messages %}
+    {% for msg in messages %}
+        <script>
+            alert("{{ msg|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %} {% endcomment %}
+
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    padding: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-btn {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    margin-top: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab.active {
+    border-bottom: 3px solid #1976d2;
+    font-weight: bold;
+    color: #1976d2;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.sort-section, .filter-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table-header,
+.row {
+    display: grid;
+    grid-template-columns: 60px 250px 120px 180px 120px 170px 120px 70px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.table-header span {
+    font-weight: bold;
+}
+
+.pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.failed {
+    color: red;
+    font-weight: bold;
+}
+
+.completed {
+    color: green;
+    font-weight: bold;
+}
+
+.download-btn {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.download-btn.disabled {
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-btn {
+    padding: 6px 12px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 5px;
+}
+
+.page-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>
+
+<div class="card">
+
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn">←</button>
+        <h2>Surveyor Responses</h2>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        
+        <button class="tab active">Downloads</button>
+    </div>
+
+    <!-- Sort & Filter -->
+    <div class="toolbar">
+       
+    </div>
+
+    <!-- Table -->
+    <div class="table">
+
+        <div class="table-header">
+            <span>SL. No</span>
+            <span>Survey Name</span>
+            <span>Status</span>
+            <span>Remark</span>
+            <span>Processed By</span>
+            <span>Processed At</span>
+            <span>Record Count</span>
+            <span>Action</span>
+        </div>
+
+        <!-- Row -->
+        {% if maindata %}
+
+
+        {% for value in maindata %}
+            <div class="row">
+                <span>{{ forloop.counter }}</span>
+                <span>{{value.choiceName}}</span>
+                <span class="{{value.status}}">{{value.status}}</span>
+                <span>{{value.remark.details|default:"-"}}</span>
+                <span>{{request.user.first_name}}</span>
+                <span>{{value.processedAt}}</span>
+                <span>{{value.recordCount}}</span>
+                <button class="download-btn" data-id="{{value.id}} - {{value.choiceName}}">⬇</button>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+       
+
+        <!-- Add as many rows as needed -->
+
+    </div>
+    
+        {{ project|json_script:"user-project" }}
+        {{ token|json_script:"user-token" }}
+
+    <!-- Pagination -->
+    
+{% comment %} <div class="pagination">
+    <span id="page-info">Showing 1 to 8 of 127 entries</span>
+
+    <div class="page-controls">
+        <button id="prev-btn" class="page-btn disabled">←</button>
+        <button id="next-btn" class="page-btn">→</button>
+    </div>
+</div> {% endcomment %}
+
+
+</div>
+
+</body>
+</html>
+
+<script>
+    // Total items coming from backend
+
+// Update pagination UI
+
+document.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("download-btn")) {
+        const id = e.target.getAttribute("data-id");
+        
+        // Point this to YOUR Django URL, not the third-party API
+        const localUrl = `/download-survey/?Project=${id}`;
+
+        try {
+            window.location.href = localUrl; // Simple way to trigger the download
+        } catch (error) {
+            console.error("Download failed", error);
+        }
+    }
+});
+
+
+
+// When any download button is clicked
+// document.addEventListener("click", async (e) => {
+//     console.log("clicked")
+//     if (e.target.classList.contains("download-btn")) {
+
+//         const id = e.target.getAttribute("data-id");
+
+//         console.log("Download clicked for ID:", id);
+
+
+        
+//         const userProject = JSON.parse(document.getElementById("user-project").textContent);
+//         const usertoken = JSON.parse(document.getElementById("user-token").textContent);
+//         console.log(usertoken);
+
+
+//         // try {
+//             // Call your API endpoint
+
+            
+//             const token = usertoken
+//             // const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+            
+           
+//             const response = await fetch(
+//                `https://api.axismyindia.in/v1/admin/surveyors/qc-service/survey-response-download/download-survey-report?taskId=${id}`,
+//                 {
+//                     method: "GET",
+//                     headers: {
+//                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+//                         "Authorization": token,
+//                         "Accept": "application/octet-stream",
+//                         "locale": "en"
+//                     },
+//                 }
+//             );
+
+//             console.log(response)
+
+           
+//             if (!response.ok) {
+//                 const errorMsg = `Server error: ${response.status}. The file could not be generated.`;
+//                 console.error(errorMsg);
+//                 alert(errorMsg);
+//                 return;
+//                 // alert("Failed to download file");
+//                 // return;
+//             }
+
+           
+//             // IMPORTANT: ONLY THIS (NO JSON PARSE!)
+//             const blob = await response.blob();
+
+//             const url = window.URL.createObjectURL(blob);
+//             const a = document.createElement("a");
+
+//             a.href = url;
+//             a.download = `${userProject}_${id}.xlsx`;
+//             document.body.appendChild(a);
+//             a.click();
+//             a.remove();
+
+//             window.URL.revokeObjectURL(url);
+
+//         } 
+//         // catch (error) {
+//         //     console.error("Download error:", error);
+//         //     alert("Something went wrong!");
+
+
+//         // }
+//     // }
+// });
+// </script>

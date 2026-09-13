@@ -1,0 +1,60 @@
+{% if requested_project != None %}
+  <div class="table table-responsive">
+    <h4>{{requested_project.name}}</h4>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Surveyor</th>
+          <th>Team Leader</th>
+          <th>Total Forms</th>
+          <th>Assigned For QC</th>
+          <th>Verified By QC</th>
+          <th>Pending For QC</th>
+          <th>Percent Verified</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for drange in dates_range %}
+          {% for surveyor, surveyor_dict in final_dict.items %}
+            {% for date, values in surveyor_dict.items %}
+              {% if date == drange and values.teamleader != None %}
+                <tr>
+                  <td>{{date}}</td>
+                  <td>{{surveyor}}</td>
+                  <td>{{values.teamleader}}</td>
+                  <td>{{values.totalforms}}</td>
+                  <td>{{values.assigned_for_qc|floatformat:"0"}}</td>
+                  <td>{{values.verified_by_qc|floatformat:"0"}}</td>
+                  <td>{{values.pending_for_qc|floatformat:"0"}}</td>
+                  <td>{{values.percent_verified|floatformat:"0"}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+{% else %}
+
+  <form class="form" action="" method="get">
+    <select class="form-control col-md-4" name="project">
+      <option value="">Select Project</option>
+      {% for project in projects %}
+        <option value="{{project.pk}}">{{project.name}}</option>
+      {% endfor %}
+    </select><br>
+
+    <label for="from_date">From Date</label>
+      <input type="date" name="from_date" value="" required><br><br>
+
+    <label for="to_date">To Date</label>
+      <input type="date" name="to_date" value="" required><br><br>
+
+    <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+  </form>
+
+{% endif %}

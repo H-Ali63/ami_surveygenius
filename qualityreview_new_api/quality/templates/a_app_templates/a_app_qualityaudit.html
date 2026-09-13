@@ -1,0 +1,417 @@
+
+<style>
+#displayTDTwo td{
+
+font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+</style>
+
+
+<div class="row">
+  <div class="col-md-6 d-flex align-items-stretch grid-margin">
+    <div class="row flex-grow">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Filter Forms</h4>
+            <form class="forms-sample" action="/qualityaudit" method="GET">
+              <div class="form-group">
+
+                <!-- Projects -->
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Select Project</label>
+                  <select class="form-control form-control-lg selectpicker" id="exampleFormControlSelect1" data-live-search="true" name="Project">
+                    <option value="">--All--</option>
+                    {% for project in allfilters.projects %}
+                      <option value="{{project.pk}}" data-tokens="{{project.name}}" {% if selected_filters.project == project.pk|stringformat:"s" %}selected{% endif %}>{{project.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <!-- From Date - To Date -->
+                <div class="form-group">
+                  <label for="fromdate">From Date</label>
+                  <input type="date" name="fromdate" id="fromdate" value="{{ selected_filters.fromdate }}">
+                </div>
+                <div class="form-group">
+                  <label for="todate">To Date</label>
+                  <input type="date" name="todate" id="todate" value="{{ selected_filters.todate }}">
+                </div>
+
+                <!-- Filter By Field Researchers -->
+                <div class="form-group">
+                  <label for="exampleFormControlSelect2">Select FR</label>
+                  <select class="form-control form-control-lg selectpicker" id="exampleFormControlSelect2" data-live-search="true" name="FieldResearcher">
+                    <option value="">--All--</option>
+                    {% for fr in allfilters.fieldresearchers %}
+                      <option value="{{fr}}" data-tokens="{{fr}}" {% if selected_filters.fieldresearcher == fr %}selected{% endif %}>{{fr}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <!-- Filter By Surveyors -->
+                <div class="form-group">
+                  <label for="Surveyor">Select Surveyor</label>
+                  <input type="text" name="Surveyor" value="{{ selected_filters.surveyor }}">
+                </div>
+
+                <!-- Filter By UID -->
+                <div class="form-group">
+                  <label for="uid">Enter UID</label>
+                  <input type="text" name="uid" value="{{ selected_filters.uid }}">
+                </div>
+
+                <!-- Filter By Verified By -->
+                <div class="form-group">
+                  <label for="exampleFormControlSelect4">Select Verified By</label>
+                  <select class="form-control form-control-lg" id="exampleFormControlSelect4" name="VerifiedBy">
+                    <option value="">--All--</option>
+                    {% for vr in allfilters.verifiedby %}
+                      <option value="{{vr.pk}}" {% if selected_filters.verifiedby == vr.pk|stringformat:"s" %}selected{% endif %}>{{vr.employee_id}}-{{vr.user.first_name}} {{vr.user.last_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <!-- Check only verified forms -->
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="checkbox" name="verifiedflag" class="form-check-input" {% if selected_filters.verifiedflag == "on" %}checked{% endif %}>Only Verified Forms
+                  </label>
+                </div><br>
+
+              </div>
+
+              <!-- <div class="form-group">
+                <label for="page">Select Surveyor</label>
+                <input type="text" name="page" id="page">
+              </div> -->
+
+              <a href="/qualityaudit?{{getdata}}&page={{next}}">Next</a>
+              <a href="/qualityaudit?{{getdata}}&page={{previous}}">Previous</a>
+
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+
+              <a href="/qualityaudit" class="btn btn-light">Reset</a>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if maindata != None and filterby.0 == 'UID' %}
+
+
+<!-- <div class="row">
+  <div class="col-md-6 d-flex align-items-stretch grid-margin">
+    <div class="row flex-grow">
+      <div class="col-12"> -->
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Form Data ({{totalcount}})</h4>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>UID  /<br><br>Date  /<br><br>Time</th>
+                      <th>Project  /<br><br>Surveyor  /<br><br>FR Name</th>
+                      <th>Verification Status  /<br><br>Verified By  /<br><br>OTP Verification</th>
+                      <th>Interview<br>Duration</th>
+                      <th>Entered Location  /<br><br>Actual Location</th>
+                      <th>Audio Recordings</th>
+
+                      {% if count != None %}
+                        <th>Image / Video</th>
+                      {% endif %}
+
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for data in maindata %}
+
+                        <tr>
+                          <td>
+                            {{data.uid}}     /
+                          <br><br>
+                            {{data.params.date}}     /
+                          <br><br>
+                            {{data.params.time}}
+                          </td>
+                          <td>
+                            {{data.project.name}}     /
+                          <br><br>
+                            {{data.surveyor.user.first_name}} {{data.surveyor.user.last_name}}     /
+                          <br><br>
+                            {{data.params.tldetails}}
+                          </td>
+                          <td>
+                            {{data.verification_status.name}}     /
+                          <br><br>
+                            {{data.user.user.first_name}} {{data.user.user.last_name}}     /
+                          <br><br>
+                            {{data.otp_verified}}
+                          </td>
+                          <td>
+                            {{data.params.timedifference}}
+                          </td>
+                          <td>
+                            {{data.params.village}}     /
+                          <br><br>
+                            {{data.params.actualaddress}}
+                          </td>
+                          <td>
+                            {% for url in data.params.audiourls %}
+                              {% if forloop.counter == 2 %}
+                                <p>
+                                  <a href="{{url.1}}">User</a>
+                                </p>
+                              {% else %}
+                                <p>
+                                  <a href="{{url.1}}">Recording</a>
+                                </p>
+                              {% endif %}
+                              
+                            {% endfor %}
+                          </td>
+
+                          {% if data.img_url or data.video_url %} 
+                            <td>
+                              {% if data.img_url != "None" %}
+                                <p>
+                                  <a href="{{data.img_url}}">Image</a>
+                                </p>
+                              {% else %}
+                                <p>
+                                  <a href="{{data.video_url}}">Video</a>
+                                </p>
+                              {% endif %} 
+                          </td>
+                          
+                        {% endif %}
+
+                          <td>
+                            {% for key, value in data.remarks.items %}
+                              {{key}} - {{value}}<br>
+                            {% endfor %}
+                            Verified at : {{data.verification_date}}
+
+                             <!--added responsesdict-->
+                             <br><br><span style="font-weight: bolder;"><u>User Data:</u><br><br></span>
+                              {% for ans in data.params.registration_details %}
+                               <span style="font-weight: bold;">{{ans.1}}    :    {{ans.0}}<br><br></span>
+                             {% endfor %}
+                             <!--responsesdict-->
+
+                            <br><br><span style="font-weight: bolder;"><u>Recordings:</u><br><br></span>
+                            {% for ans in data.params.audioanswers %}
+                              <span style="font-weight: bold;">{{ans.1}}    :    {{ans.0}}<br><br></span>
+                            {% endfor %}
+
+                          </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                  </tbody>
+
+              </table>
+            </div>
+
+          </div>
+        </div>
+      <!-- </div>
+    </div>
+  </div>
+</div> -->
+
+
+{% elif maindata != None %}
+      <!-- <div class="row">
+        <div class="col-md-6 d-flex align-items-stretch grid-margin">
+          <div class="row flex-grow">
+            <div class="col-12"> -->
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Form Data ({{totalcount}})</h4>
+
+
+
+                    <div class="table-responsive">
+                     <table class="table table-bordered" id="displayTDTwo">
+                        <thead>
+                          <tr>
+                            <th>UID  /<br><br>Date  /<br><br>Time</th>
+                            <th>Project  /<br><br>Surveyor  /<br><br>FR Name</th>
+                            <th>Verification Status  /<br><br>Verified By  /<br><br>OTP Verification</th>
+                            <th>Interview<br>Duration</th>
+                            <th>Entered Location  /<br><br>Actual Location</th>
+                            <th>Audio Recordings</th>
+
+                            {% if count != None %}
+                              <th>Image / Video</th>
+                            {% endif %}
+
+                            <th>Remarks</th>
+                            
+                            <th>Superchecker</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          {% for data in maindata %}
+
+                              <tr>
+                                <td>
+                                  {{data.uid}}     /
+                                <br><br>
+                                  {{data.params.date}}     /
+                                <br><br>
+                                  {{data.params.time}}
+                                </td>
+                                <td>
+                                  {{data.project.name}}     /
+                                <br><br>
+                                  {{data.surveyor.user.first_name}} {{data.surveyor.user.last_name}}     /
+                                <br><br>
+                                  {{data.params.tldetails}}
+                                </td>
+                                <td>
+                                  {{data.verification_status.name}}     /
+                                <br><br>
+                                  {{data.user.user.first_name}} {{data.user.user.last_name}}     /
+                                <br><br>
+                                  {{data.otp_verified}}
+                                </td>
+                                <td>
+                                  {{data.params.timedifference}}
+                                </td>
+                                <td>
+                                  {{data.params.village}}     /
+                                <br><br>
+                                  {{data.params.actualaddress}}
+                                </td>
+                                <td>
+                                  {% for url in data.params.audiourls %}
+                                    {% if forloop.counter == 2 %}
+                                      <p>
+                                        <a href="{{url.1}}">User</a>
+                                      </p>
+                                    {% else %}
+                                      <p>
+                                        <a href="{{url.1}}">Recording</a>
+                                      </p>
+                                    {% endif %}
+                                    
+                                  {% endfor %}
+                                </td>
+
+                                {% if data.img_url or data.video_url %} 
+                                    <td>
+                                      {% if data.img_url != "None" %}
+                                        <p>
+                                          <a href="{{data.img_url}}">Image</a>
+                                        </p>
+                                      {% else %}
+                                        <p>
+                                          <a href="{{data.video_url}}">Video</a>
+                                        </p>
+                                      {% endif %} 
+                                  </td>
+                                    
+                                {% endif %}
+
+                                <td>
+                                  {% for key, value in data.remarks.items %}
+                                    {{key}} - {{value}}<br>
+                                  {% endfor %}
+                                  Verified at : {{data.verification_date}}
+
+                                   <!--added responsesdict-->
+                                  <br><br><span style="font-weight: bolder;"><u>User Data:</u><br><br></span>
+                                  {% for ans in data.params.registration_details %}
+                                    <span style="font-weight: bold;">{{ans.1}}    :    {{ans.0}}<br><br></span>
+                                  {% endfor %}
+                                  <!--responsesdict-->
+
+                                  <br><br><span style="font-weight: bolder;"><u>Recordings:</u><br><br></span>
+                                  {% for ans in data.params.audioanswers %}
+                                    <span style="font-weight: bold;">{{ans.1}}    :    {{ans.0}}<br><br></span>
+                                  {% endfor %}
+                                </td>
+
+                                <td>
+                                  {% if data.superchecking_done == 1 %}
+                                    <h4>Superchecking Done</h4>
+                                  {% else %}
+                                    <form class="" action="" method="post">
+                                      {% csrf_token %}
+                                      {% for key, value in data.remarks.items %}
+
+                                        {% if key != "uid" and key != "send_to_surveyor" and key != "surveyor" %}
+                                          {% if key == "comments" %}
+                                            <label for="{{key}}">{{key}}</label>
+                                            <input type="text" name="{{key}}" value="{{value}}">
+                                            <br><br>
+                                          {% else %}
+                                            <label for="{{key}}">{{key}}</label>
+                                            <select name="{{key}}" required>
+                                              <option value="{{value}}" style="font-weight: bold;">{{value}}</option>
+                                              <option value="" style="" disabled>-----------</option>
+                                              <option value="Variation">Variation</option>
+                                              <option value="No_variation">No Variation</option>
+                                              <option value="Not_audible">Not Audible</option>
+                                              <option value="No_recording">No Recording</option>
+                                              <option value="Technical_issues">Technical Issues</option>
+                                              <option value="Language_barrier">Language Barrier</option>
+                                              <option value="NA">NA</option>
+                                            </select>
+                                            <br><br>
+                                          {% endif %}
+
+                                        {% endif %}
+
+                                      {% endfor %}
+                                      <input type="hidden" name="surveyresponse_uid" value="{{data.uid}}">
+                                      <input class="btn btn-success" type="submit" name="submit" value="Submit">
+                                    </form>
+                                  {% endif %}
+                                </td>
+
+                              </tr>
+
+                          {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            <!-- </div>
+          </div>
+        </div>
+      </div> -->
+{% endif %}
+
+
+<div>
+  <button style="position:fixed;bottom: 35px;right: 0;width:55px;border-radius:5px;" onclick="movePosition()">TOP</button>
+</div>
+
+
+<script>
+  function movePosition(){
+  console.log("move up")
+  window.scrollTo(0, 0);
+  }
+</script>
