@@ -1344,6 +1344,7 @@ class a_app_supercheck(TemplateView):
                     # startdate = datetime.datetime.strptime(str(request.GET["startdate"]), "%Y-%m-%d")
                     # print("request.GET:::::",request.GET["auditor_project_name"])
                     qualityRecords = None
+                    qualityrecords_auditor = QualityReview.objects.none()
                     if(request.GET["enddate"]!="" and request.GET["startdate"]!="" and request.GET["auditor_project_name"]!="default"):
                         # print("12345")
 
@@ -1355,6 +1356,10 @@ class a_app_supercheck(TemplateView):
                         enddate = datetime.datetime.strptime(str(request.GET["enddate"]), "%Y-%m-%d")
                         startdate = datetime.datetime.strptime(str(request.GET["startdate"]), "%Y-%m-%d")
                         qualityRecords = A_app_supercheck_QualityReview.objects.filter(auditor_date__range=[startdate,enddate],project_name__icontains=request.GET["auditor_project_name"])
+                        qualityrecords_auditor = QualityReview.objects.filter(
+                            auditor_date__range=[startdate, enddate],
+                            project_name__icontains=request.GET["auditor_project_name"],
+                        )
                     else:
                         # print("****1234****")
                         if(request.GET["enddate"]!="" and request.GET["startdate"]!="" and request.GET["auditor_project_name"]=="default"):
@@ -1367,6 +1372,9 @@ class a_app_supercheck(TemplateView):
                             enddate = datetime.datetime.strptime(str(request.GET["enddate"]), "%Y-%m-%d")
                             startdate = datetime.datetime.strptime(str(request.GET["startdate"]), "%Y-%m-%d")
                             qualityRecords = A_app_supercheck_QualityReview.objects.filter(auditor_date__range=[startdate, enddate])
+                            qualityrecords_auditor = QualityReview.objects.filter(
+                                auditor_date__range=[startdate, enddate]
+                            )
                         else:
                             qualityRecords = A_app_supercheck_QualityReview.objects.filter(project_name__icontains=request.GET["auditor_project_name"])
                             # print(qualityRecords,"<<<<<<>>>>><<<<<>>>>>>>")
